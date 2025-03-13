@@ -7,6 +7,6 @@ import com.jjy.memories_back.common.entity.MemoryTestEntity;
 import com.jjy.memories_back.common.entity.pk.MemoryTestPk;
 
 @Repository
-public interface MemoryTestRepository extends JpaRepository<MemoryTestEntity,MemoryTestPk> {
+public interface MemoryTestRepository extends JpaRepository<MemoryTestEntity, MemoryTestPk> {
   
 }

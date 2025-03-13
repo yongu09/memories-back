@@ -21,7 +21,7 @@ import lombok.Setter;
 public class MemoryTestEntity {
   
   @Id
-  private String userid;
+  private String userId;
   @Id
   private Integer sequence;
   private Integer measurementTime;
