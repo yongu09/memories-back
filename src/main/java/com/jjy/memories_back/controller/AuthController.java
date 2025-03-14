@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jjy.memories_back.common.dto.request.auth.IdCheckRequestDto;
+import com.jjy.memories_back.common.dto.request.auth.SignUpRequestDto;
 import com.jjy.memories_back.common.dto.response.ResponseDto;
 import com.jjy.memories_back.service.AuthService;
 
@@ -18,13 +19,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthController {
 
-  private final AuthService authService; /* 의존성 주입 _ service package에 AuthService를 하고 RequiredArgsConstructor 어노테이션 해주는*/
+  private final AuthService authService; 
   
   @PostMapping("/id-check")
   public ResponseEntity<ResponseDto> idCheck(
     @RequestBody @Valid IdCheckRequestDto requestBody
   ) {
     ResponseEntity<ResponseDto> response = authService.idCheck(requestBody);
+    return response;
+  }
+
+  @PostMapping("/sign-up")
+  ResponseEntity<ResponseDto> signUp(
+    @RequestBody @Valid SignUpRequestDto requestBody
+  ) {
+    ResponseEntity<ResponseDto> response = authService.signUp(requestBody);
     return response;
   }
 
