@@ -26,7 +26,6 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
   
   @Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-
     OAuth2User oAuth2User = super.loadUser(userRequest);
     String registration = userRequest.getClientRegistration().getClientName().toUpperCase();
 
@@ -43,14 +42,17 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
     UserEntity userEntity = userRepository.findByJoinTypeAndSnsId(registration, snsId);
 
     CustomOAuth2User customOAuth2User = null;
+    Map<String, Object> attributes = new HashMap<>();
 
     if (userEntity == null) {
-      
+      attributes.put("snsId", snsId);
+      attributes.put("joinType", registration);
+
+      customOAuth2User = new CustomOAuth2User(snsId, attributes, false);
     } else {
       String userId = userEntity.getUserId();
       String accessToken = jwtProvider.create(userId);
-
-      Map<String, Object> attributes = new HashMap<>();
+      
       attributes.put("accessToken", accessToken);
 
       customOAuth2User = new CustomOAuth2User(userId, attributes, true);
