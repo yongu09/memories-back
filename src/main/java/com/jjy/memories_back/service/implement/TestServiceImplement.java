@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.jjy.memories_back.common.dto.request.test.PostConcentrationRequestDto;
 import com.jjy.memories_back.common.dto.request.test.PostMemoryRequestDto;
+import com.jjy.memories_back.common.dto.response.GetRecentlyConcentrationResponseDto;
 import com.jjy.memories_back.common.dto.response.ResponseDto;
 import com.jjy.memories_back.common.dto.response.test.GetConcentrationResponseDto;
 import com.jjy.memories_back.common.dto.response.test.GetMemoryResponseDto;
+import com.jjy.memories_back.common.dto.response.test.GetRecentlyMemoryResponseDto;
 import com.jjy.memories_back.common.entity.ConcentrationTestEntity;
 import com.jjy.memories_back.common.entity.MemoryTestEntity;
 import com.jjy.memories_back.repository.ConcentrationTestRepository;
@@ -107,6 +109,41 @@ public class TestServiceImplement implements TestService {
     }
 
     return GetConcentrationResponseDto.success(concentrationTestEntities);
+
+  }
+
+  @Override
+  public ResponseEntity<? super GetRecentlyMemoryResponseDto> getRecentlyMemory(String userId) {
+
+    List<MemoryTestEntity> memoryTestEntities = new ArrayList<>();
+    
+    try {
+
+      memoryTestEntities = memoryTestRepository.findTop10ByUserIdOrderBySequenceDesc(userId);
+      
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetRecentlyMemoryResponseDto.success(memoryTestEntities);
+  }
+
+  @Override
+  public ResponseEntity<? super GetRecentlyConcentrationResponseDto> getRecentlyConcentration(String userId) {
+
+    List<ConcentrationTestEntity> concentrationTestEntities = new ArrayList<>();
+    
+    try {
+
+      concentrationTestEntities = concentrationTestRepository.findTop10ByUserIdOrderBySequenceDesc(userId);
+      
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return  GetRecentlyConcentrationResponseDto.success(concentrationTestEntities);
 
   }
   
