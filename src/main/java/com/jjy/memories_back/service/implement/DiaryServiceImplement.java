@@ -11,6 +11,7 @@ import com.jjy.memories_back.common.dto.request.diary.PatchDiaryRequestDto;
 import com.jjy.memories_back.common.dto.request.diary.PostCommentRequestDto;
 import com.jjy.memories_back.common.dto.request.diary.PostDiaryRequestDto;
 import com.jjy.memories_back.common.dto.response.ResponseDto;
+import com.jjy.memories_back.common.dto.response.diary.GetCommentResponseDto;
 import com.jjy.memories_back.common.dto.response.diary.GetDiaryResponseDto;
 import com.jjy.memories_back.common.dto.response.diary.GetEmpathyResponseDto;
 import com.jjy.memories_back.common.dto.response.diary.GetMyDiaryResponseDto;
@@ -122,6 +123,8 @@ public class DiaryServiceImplement implements DiarySerivce {
       boolean isWriter = writerId.equals(userId);
       if (!isWriter) return ResponseDto.noPermission();
 
+      empathyRepository.deleteByDiaryNumber(diaryNumber);
+      commentRepository.deleteByDiaryNumber(diaryNumber);
       diaryRepository.delete(diaryEntity);
       
     } catch (Exception exception) {
@@ -177,6 +180,24 @@ public class DiaryServiceImplement implements DiarySerivce {
   }
 
   @Override
+  public ResponseEntity<? super GetCommentResponseDto> getComment(Integer diaryNumber) {
+
+    List<CommentEntity> commentEntities = new ArrayList<>();
+    
+    try {
+
+      commentEntities = commentRepository.findByDiaryNumberOrderByWriteDateDesc(diaryNumber);
+      
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetCommentResponseDto.success(commentEntities);
+
+  }
+
+  @Override
   public ResponseEntity<ResponseDto> postComment(PostCommentRequestDto dto, Integer diaryNumber, String userId) {
     
     try {
@@ -195,6 +216,8 @@ public class DiaryServiceImplement implements DiarySerivce {
     return ResponseDto.success(HttpStatus.CREATED);
 
   }
+
+  
 
   
 }
