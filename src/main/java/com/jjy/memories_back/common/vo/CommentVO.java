@@ -12,13 +12,13 @@ public class CommentVO {
   private Integer commentNumber;
   private String commentWriterId;
   private String commentWriteDate;
-  private String conmment;
+  private String comment;
 
   private CommentVO(CommentEntity commentEntity) {
     this.commentNumber = commentEntity.getCommentNumber();
     this.commentWriterId = commentEntity.getUserId();
     this.commentWriteDate = commentEntity.getWriteDate();
-    this.conmment = commentEntity.getContent();
+    this.comment = commentEntity.getContent();
   }
 
   public static List<CommentVO> getList(List<CommentEntity> commentEntities) {
